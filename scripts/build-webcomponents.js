@@ -2,19 +2,8 @@
 import { build } from 'vite';
 import { fileURLToPath, URL } from 'url';
 import { terser } from 'rollup-plugin-terser';
-
-const entries = [
-  {
-    name: 'entry-1.min',
-    entry: '../src/webcomponents/entry-1.js',
-    clean: true // Cleans output folder for the first bundle
-  },
-  {
-    name: 'entry-2.min',
-    entry: '../src/webcomponents/entry-2.js',
-    clean: false // Keeps previous bundles intact
-  }
-];
+import { writeFile } from 'fs/promises';
+import entries from '../src/webcomponents/entries.js';
 
 async function buildEntries() {
   for (const { name, entry, clean } of entries) {
@@ -31,12 +20,11 @@ async function buildEntries() {
         },
         outDir: 'dist/webcomponents',
         emptyOutDir: clean,
-        // Rollup options are passed here:
         rollupOptions: {
           output: {
             // Force all code into a single file:
             inlineDynamicImports: true,
-            // Use terser for aggressive minification
+            // Use terser for aggressive minification:
             plugins: [terser()]
           }
         },
@@ -52,6 +40,43 @@ async function buildEntries() {
 
     console.log(`✅ Built ${name}`);
   }
+
+  // Generate a demo page that includes all bundles from entries.js:
+  const demoHtml = generateDemoHtml(entries);
+  await writeFile('dist/webcomponents/index.html', demoHtml);
+  console.log('✅ Generated demo index.html');
+}
+
+function generateDemoHtml(entries) {
+  // Create a script tag for each entry bundle:
+  const scripts = entries
+    .map(e => `<script type="module" src="./${e.name}"></script>`)
+    .join('\n    ');
+
+  // Customize the custom elements below as needed.
+  return `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Web Components Demo</title>
+    <style>
+      body { font-family: sans-serif; padding: 20px; }
+      section { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+    </style>
+  </head>
+  <body>
+    <h1>Web Components Demo</h1>
+    <section>
+      <h2>Test Web Components</h2>
+      <!-- Insert your custom elements here -->
+      <my-component-1></my-component-1>
+      <my-component-2></my-component-2>
+      <my-component-3></my-component-3>
+    </section>
+    <!-- Load bundle(s) -->
+    ${scripts}
+  </body>
+</html>`;
 }
 
 buildEntries().catch((err) => {
