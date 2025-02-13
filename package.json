@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "build:webcomponent": "vite build --config vite.webcomponents.config.mjs",
+    "build:webcomponent": "node scripts/build-webcomponents.js",
     "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix"
   },

@@ -1,26 +1,39 @@
 import { defineConfig } from 'vite';
 import { terser } from 'rollup-plugin-terser';
 import { fileURLToPath, URL } from 'url';
+// Import the array of entry definitions:
+import entries from './src/webcomponents/entries.js';
 
-export default defineConfig({
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
-    rollupOptions: {
-      input: {
-        entry1: fileURLToPath(new URL('./src/webcomponents/entry-1.js', import.meta.url)),
-        entry2: fileURLToPath(new URL('./src/webcomponents/entry-2.js', import.meta.url))
-      },
-      output: {
-        // Files will be built into dist/webcomponents/entry-1.min.js etc.
-        entryFileNames: 'webcomponents/[name].min.js'
-      },
-      plugins: [terser()]
-    }
-  },
+const commonConfig = {
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   }
-});
+};
+
+// Export an array of config objects – one for each entry.
+// (Vite supports exporting an array so each config is built in one run.)
+export default entries.map(entry =>
+  defineConfig({
+    ...commonConfig,
+    build: {
+      lib: {
+        // Convert the relative entry path to an absolute file URL
+        entry: fileURLToPath(new URL(entry.entry, import.meta.url)),
+        name: entry.name,
+        // The fileName option expects a function or a string.
+        // Here we simply use the 'name' property (which includes '.min')
+        fileName: entry.name,
+        formats: ['es']
+      },
+      outDir: 'dist/webcomponents',
+      emptyOutDir: entry.clean, // Only clean for the first entry
+      rollupOptions: {
+        // inlineDynamicImports forces everything into a single file
+        inlineDynamicImports: true,
+        plugins: [terser()]
+      }
+    }
+  })
+);
