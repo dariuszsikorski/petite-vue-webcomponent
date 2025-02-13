@@ -1,12 +1,13 @@
 {
-  "name": "vite-petite-vue-starter",
-  "private": true,
+  "name": "petite-vue-webcomponent",
   "version": "0.1.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "build:webcomponent": "vite build --config vite.webcomponents.config.mjs",
     "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix"
   },
@@ -18,7 +19,9 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^3.5.1",
+    "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.84.0",
+    "terser": "^5.16.1",
     "vite": "^6.1.0",
     "vite-plugin-html": "^3.2.2"
   }

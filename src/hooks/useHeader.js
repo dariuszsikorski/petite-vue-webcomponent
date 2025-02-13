@@ -1,3 +1,3 @@
-export function TestHooks(params) {
-  console.log("Some hook");
+export function TestHooks() {
+  console.log('Some hook executed.');
 }

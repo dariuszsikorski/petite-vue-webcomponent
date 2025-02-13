@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Web Components Demo</title>
+  </head>
+  <body>
+    <h1>Web Components Demo</h1>
+    <p>Below you can test the web components built as separate bundles.</p>
+    
+    <section>
+      <h2>Standalone Web Component (entry-1 bundle)</h2>
+      <!-- This demo expects only my-component-1 to be registered -->
+      <my-component-1></my-component-1>
+    </section>
+    
+    <section>
+      <h2>Bundled Web Components (entry-2 bundle)</h2>
+      <!-- This demo loads all three components -->
+      <my-component-1></my-component-1>
+      <my-component-2></my-component-2>
+      <my-component-3></my-component-3>
+    </section>
+    
+    <!-- To test, change the script below to load the desired bundle -->
+    <script type="module" src="/webcomponents/entry2.min.js"></script>
+    <!-- For example, to load the standalone bundle, use:
+         <script type="module" src="/webcomponents/entry1.min.js"></script>
+    -->
+  </body>
+</html>

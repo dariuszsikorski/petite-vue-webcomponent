@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'url';
-
 import { defineConfig } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 
@@ -10,39 +9,34 @@ export default defineConfig({
       minify: false,
       pages: [
         {
-          // entry: "src/main.ts",
           filename: 'index.html',
           template: 'index.html',
           injectOptions: {
-            data: {
-              title: 'Index',
-            },
-          },
+            data: { title: 'Index' }
+          }
         },
         {
           filename: 'about.html',
           template: 'about.html',
           injectOptions: {
-            data: {
-              title: 'About',
-            },
-          },
-        },
-      ],
-    }),
+            data: { title: 'About' }
+          }
+        }
+      ]
+    })
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
   },
   build: {
     rollupOptions: {
       output: {
-        entryFileNames: `assets/[name].js`,
-        chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`,
-      },
-    },
-  },
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]'
+      }
+    }
+  }
 });
